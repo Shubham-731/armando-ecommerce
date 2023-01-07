@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Cart from "./Cart";
 import Link from "next/link";
 
-const Navbar = () => {
+const Navbar = ({ cartLen, productsInCart, priceOfCart, removeProduct }) => {
   const [openMenu, setOpenMenu] = useState(false);
   const [menuIcon, setMenuIcon] = useState(false);
   const [cart, setCart] = useState(false);
@@ -19,7 +19,6 @@ const Navbar = () => {
   const openCart = () => {
     setCart(true);
   };
-
   const closeCart = () => {
     setCart(false);
   };
@@ -144,9 +143,11 @@ const Navbar = () => {
                     </svg>
                   </span>
                   <span>Cart</span>
-                  <span className="bg-pink-400 text-white text-sm rounded-full p-2 py-0">
-                    2
-                  </span>
+                  {cartLen > 0 && (
+                    <span className="bg-pink-400 text-white text-sm rounded-full p-2 py-0">
+                      {cartLen}
+                    </span>
+                  )}
                 </button>
               </li>
               <li className="list-none">
@@ -363,7 +364,13 @@ const Navbar = () => {
         </div>
       </nav>
 
-      <Cart open={cart} handleClose={closeCart} />
+      <Cart
+        open={cart}
+        handleClose={closeCart}
+        productsInCart={productsInCart}
+        priceOfCart={priceOfCart}
+        removeProduct={removeProduct}
+      />
     </>
   );
 };

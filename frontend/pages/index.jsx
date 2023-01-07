@@ -2,7 +2,7 @@ import axios from "axios";
 
 import ProductCard from "../components/Cards/ProductCard";
 
-export default function Home({ products }) {
+export default function Home({ products, cart, addToCart }) {
   return (
     <section>
       <div className="bg-white">
@@ -13,7 +13,12 @@ export default function Home({ products }) {
 
           <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {products.map((product) => (
-              <ProductCard product={product} key={product.id} />
+              <ProductCard
+                product={product}
+                key={product.id}
+                cart={cart}
+                addToCart={addToCart}
+              />
             ))}
           </div>
         </div>

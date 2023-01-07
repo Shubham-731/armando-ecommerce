@@ -1,7 +1,7 @@
 import Link from "next/link";
 import AddToCart from "../AddToCart";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, addToCart }) => {
   return (
     <div className="group relative">
       <Link href={`/products/${product.id}`}>
@@ -29,7 +29,9 @@ const ProductCard = ({ product }) => {
         </div>
       </Link>
 
-      <AddToCart product={product} handleCart={handleCart} />
+      <AddToCart
+        handleCart={() => addToCart(product, product.attributes.price)}
+      />
     </div>
   );
 };
