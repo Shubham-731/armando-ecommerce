@@ -12,7 +12,6 @@ import "react-toastify/dist/ReactToastify.css";
 export default function App({ Component, pageProps }) {
   const [progress, setProgress] = useState(0);
   const [cart, setCart] = useState([]);
-  const [cartPrice, setCartPrice] = useState(0);
   const [refreshKey, setRefreshKey] = useState(0);
 
   const router = useRouter();
@@ -31,27 +30,17 @@ export default function App({ Component, pageProps }) {
     } else {
       localStorage.setItem("cart", JSON.stringify(cart));
     }
-
-    const storedPrice = localStorage.getItem("price");
-    if (storedPrice) {
-      setCartPrice(parseInt(storedPrice));
-    } else {
-      localStorage.setItem("price", cartPrice.toString());
-    }
   }, []);
 
   // Add products to cart
-  const addToCart = (product, price) => {
+  const addToCart = (product) => {
     if (!cart.some((item) => item.product.id === product.id)) {
       let newCart = cart;
       newCart.push({ product });
       setCart(newCart);
-      setCartPrice(cartPrice + price);
       setRefreshKey(Math.random());
 
       localStorage.setItem("cart", JSON.stringify(cart));
-      localStorage.setItem("price", cartPrice.toString());
-
       toast.success("Product added to cart!", toastOptions);
     } else {
       toast.warning("Product already exists in cart!", toastOptions);
@@ -59,15 +48,13 @@ export default function App({ Component, pageProps }) {
   };
 
   // Remove the product from cart
-  const removeProduct = (productId, price) => {
+  const removeProduct = (productId) => {
     const modifiedCart = cart.filter(({ product }) => product.id !== productId);
 
     setCart(modifiedCart);
-    setCartPrice(cartPrice - price);
     setRefreshKey(Math.random());
 
     localStorage.setItem("cart", JSON.stringify(modifiedCart));
-    localStorage.setItem("price", cartPrice.toString());
   };
 
   return (
@@ -88,16 +75,11 @@ export default function App({ Component, pageProps }) {
             progress={progress}
             cartLen={cart.length}
             productsInCart={cart}
-            priceOfCart={cartPrice}
             removeProduct={removeProduct}
+            key={refreshKey}
           />
           <main>
-            <Component
-              {...pageProps}
-              cart={cart}
-              addToCart={addToCart}
-              key={refreshKey}
-            />
+            <Component {...pageProps} cart={cart} addToCart={addToCart} />
           </main>
           <Footer />
         </>

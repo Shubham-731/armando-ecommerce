@@ -2,7 +2,7 @@ import axios from "axios";
 
 import ProductCard from "../components/Cards/ProductCard";
 
-export default function Home({ products, cart, addToCart }) {
+export default function Home({ products, addToCart }) {
   return (
     <section>
       <div className="bg-white">
@@ -16,7 +16,6 @@ export default function Home({ products, cart, addToCart }) {
               <ProductCard
                 product={product}
                 key={product.id}
-                cart={cart}
                 addToCart={addToCart}
               />
             ))}

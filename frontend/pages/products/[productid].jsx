@@ -1,7 +1,7 @@
 import axios from "axios";
 import NotFoundComp from "../../components/NotFoundComp";
 
-const Product = ({ product }) => {
+const Product = ({ product, addToCart }) => {
   return (
     <>
       {JSON.stringify(product) === "{}" || product === null ? (
@@ -44,7 +44,10 @@ const Product = ({ product }) => {
                   <span className="title-font font-medium text-2xl text-gray-900">
                     ${product.attributes.price}
                   </span>
-                  <button className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded">
+                  <button
+                    onClick={() => addToCart(product, product.attributes.price)}
+                    className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded"
+                  >
                     Add to Cart
                   </button>
                 </div>

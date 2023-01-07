@@ -99,7 +99,7 @@ const Navbar = ({ cartLen, productsInCart, priceOfCart, removeProduct }) => {
               </li>
               <li className="list-none">
                 <Link
-                  href="#"
+                  href="/orders"
                   className=" hover:text-pink-400 transition flex items-center gap-2"
                 >
                   <span>
