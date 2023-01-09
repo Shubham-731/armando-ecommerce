@@ -24,7 +24,7 @@ const Login = () => {
 
   const loginUser = async (values) => {
     try {
-      const serverUrl = `${process.env.NEXT_PUBLIC_API_HOST}/api/auth/local`;
+      const serverUrl = `${process.env.NEXT_PUBLIC_STRAPI_API_HOST}/api/auth/local`;
 
       const { data } = await axios.post(serverUrl, values, {
         headers: {

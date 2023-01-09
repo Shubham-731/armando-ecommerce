@@ -7,7 +7,7 @@ const ProductCard = ({ product, addToCart }) => {
       <Link href={`/products/${product.id}`}>
         <div className="min-h-60 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
           <img
-            src={`${process.env.NEXT_PUBLIC_API_HOST}${product.attributes.image.data?.attributes.url}`}
+            src={`${process.env.NEXT_PUBLIC_STRAPI_API_HOST}${product.attributes.image.data?.attributes.url}`}
             alt={product.attributes.image.data?.attributes.name}
             className="h-full w-full object-cover object-center lg:h-full lg:w-full"
           />
@@ -28,7 +28,6 @@ const ProductCard = ({ product, addToCart }) => {
           </p>
         </div>
       </Link>
-
       <AddToCart
         handleCart={() => addToCart(product, product.attributes.price)}
       />

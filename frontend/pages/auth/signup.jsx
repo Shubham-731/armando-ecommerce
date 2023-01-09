@@ -14,7 +14,7 @@ const Signup = () => {
 
   const signUp = async (values) => {
     try {
-      const serverUrl = `${process.env.NEXT_PUBLIC_API_HOST}/api/auth/local/register`;
+      const serverUrl = `${process.env.NEXT_PUBLIC_STRAPI_API_HOST}/api/auth/local/register`;
 
       const res = await axios.post(serverUrl, values, {
         headers: {

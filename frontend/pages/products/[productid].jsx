@@ -13,7 +13,7 @@ const Product = ({ product, addToCart }) => {
               <img
                 alt="ecommerce"
                 className="lg:w-[400px] w-full lg:h-[400px] h-64 object-cover object-center rounded"
-                src={`${process.env.NEXT_PUBLIC_API_HOST}${product.attributes.image.data.attributes.url}`}
+                src={`${process.env.NEXT_PUBLIC_STRAPI_API_HOST}${product.attributes.image.data.attributes.url}`}
               />
               <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
                 <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
@@ -65,7 +65,7 @@ export default Product;
 export async function getServerSideProps(context) {
   try {
     const serverUrl = `${
-      process.env.NEXT_PUBLIC_API_HOST
+      process.env.NEXT_PUBLIC_STRAPI_API_HOST
     }/api/products/${parseInt(context.params.productid)}?populate=*`;
 
     const { data } = await axios.get(serverUrl, {

@@ -1,0 +1,26 @@
+{
+  "name": "ecommerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "cd frontend && npm run dev",
+    "server": "cd backend && npm run develop",
+    "dev": "concurrently \"npm run client\" \"npm run server\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shubham-731/armando-ecommerce.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shubham-731/armando-ecommerce/issues"
+  },
+  "homepage": "https://github.com/Shubham-731/armando-ecommerce#readme",
+  "dependencies": {
+    "concurrently": "^7.6.0"
+  }
+}

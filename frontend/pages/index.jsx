@@ -28,7 +28,7 @@ export default function Home({ products, addToCart }) {
 
 export async function getServerSideProps(context) {
   try {
-    const serverUrl = `${process.env.NEXT_PUBLIC_API_HOST}/api/products?populate=*`;
+    const serverUrl = `${process.env.NEXT_PUBLIC_STRAPI_API_HOST}/api/products?populate=*`;
     const { data } = await axios.get(serverUrl, {
       headers: {
         "content-type": "application/json",

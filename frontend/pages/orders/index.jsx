@@ -1,45 +1,48 @@
 import Link from "next/link";
 import Order from "../../components/Order";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import toastOptions from "../../utility/toastOptions";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const Orders = () => {
-  const orders = [
-    {
-      id: 1,
-      image:
-        "https://rukminim1.flixcart.com/image/400/400/kv5kfww0/keyboard/gaming-keyboard/l/u/r/cb-gk-22-veritas-tkl-rgb-sonic-spectrum-cosmicbyte-original-imag84y3zqvabfqp.jpeg?q=70",
-      productName: "Backlit keyboard",
-      description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. In atque nemo
-          iure odio id commodi sed porro quia! Sint repellat dolores
-          consequuntur porro voluptatibus quas aspernatur vel cumque libero
-          adipisci.`,
-      status: "pending",
-      price: 49,
-    },
-    {
-      id: 3,
-      image:
-        "https://rukminim1.flixcart.com/image/400/400/kv5kfww0/keyboard/gaming-keyboard/l/u/r/cb-gk-22-veritas-tkl-rgb-sonic-spectrum-cosmicbyte-original-imag84y3zqvabfqp.jpeg?q=70",
-      productName: "Backlit keyboard",
-      description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. In atque nemo
-          iure odio id commodi sed porro quia! Sint repellat dolores
-          consequuntur porro voluptatibus quas aspernatur vel cumque libero
-          adipisci.`,
-      status: "placed",
-      price: 49,
-    },
-    {
-      id: 2,
-      image:
-        "https://rukminim1.flixcart.com/image/400/400/kv5kfww0/keyboard/gaming-keyboard/l/u/r/cb-gk-22-veritas-tkl-rgb-sonic-spectrum-cosmicbyte-original-imag84y3zqvabfqp.jpeg?q=70",
-      productName: "Backlit keyboard",
-      description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. In atque nemo
-          iure odio id commodi sed porro quia! Sint repellat dolores
-          consequuntur porro voluptatibus quas aspernatur vel cumque libero
-          adipisci.`,
-      status: "delivered",
-      price: 49,
-    },
-  ];
+  const [orders, setOrders] = useState([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    const JWT = localStorage.getItem("jwt");
+
+    if (!JWT) {
+      router.push("/");
+    }
+
+    // Get orders
+    const getOrders = async () => {
+      const serverUrl = `${process.env.NEXT_PUBLIC_STRAPI_API_HOST}/api/orders`;
+
+      try {
+        const { data } = await axios.get(serverUrl, {
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${JWT}`,
+          },
+        });
+
+        if (data.data) {
+          setOrders(data.data);
+        }
+      } catch (error) {
+        console.log(error);
+
+        if (error.response) {
+          toast.error(error.response.data.error.message, toastOptions);
+        }
+      }
+    };
+
+    getOrders();
+  }, []);
 
   return (
     <div className="min-h-screen w-full py-10 px-8 md:px-0 max-w-6xl mx-auto">
@@ -52,9 +55,15 @@ const Orders = () => {
       </div>
 
       <div className="flex items-center gap-4 flex-col divide-y divide-slate-300 space-y-4">
-        {orders.map((data) => {
-          return <Order data={data} key={data.id} />;
-        })}
+        {orders.length > 0 &&
+          orders.map((order) => (
+            <Order
+              data={order.attributes.products}
+              key={order.id}
+              status={order.attributes.status}
+              amount={order.attributes.amount}
+            />
+          ))}
       </div>
     </div>
   );

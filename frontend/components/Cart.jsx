@@ -1,6 +1,10 @@
 import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import Link from "next/link";
+import axios from "axios";
+import toastOptions from "../utility/toastOptions";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import shortid from "shortid";
 
 export default function Cart({
   open,
@@ -10,6 +14,8 @@ export default function Cart({
 }) {
   const [cartPrice, setCartPrice] = useState(0);
 
+  const router = useRouter();
+
   useEffect(() => {
     let price = 0;
     productsInCart.map(({ product }) => {
@@ -17,6 +23,38 @@ export default function Cart({
     });
     setCartPrice(price);
   }, []);
+
+  const handleCheckout = async () => {
+    try {
+      // Check for JWT
+      const JWT = localStorage.getItem("jwt");
+      if (!JWT) {
+        router.push("/auth/login");
+      }
+
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_STRAPI_API_HOST}/api/orders/pre-transaction`,
+        {
+          products: productsInCart,
+          orderId: `order_${shortid.generate()}`,
+          amount: cartPrice,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JWT}`,
+          },
+        }
+      );
+
+      console.log(data);
+      router.push(data);
+    } catch (error) {
+      if (error.response) {
+        toast.error(error.response.data.error.message, toastOptions);
+      }
+    }
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -88,7 +126,7 @@ export default function Cart({
                                 <li key={product.id} className="flex py-6">
                                   <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                     <img
-                                      src={`${process.env.NEXT_PUBLIC_API_HOST}${product.attributes.image.data.attributes.url}`}
+                                      src={`${process.env.NEXT_PUBLIC_STRAPI_API_HOST}${product.attributes.image.data.attributes.url}`}
                                       alt={product.attributes.image.data.name}
                                       className="h-full w-full object-cover object-center"
                                     />
@@ -150,15 +188,12 @@ export default function Cart({
                         Shipping and taxes calculated at checkout.
                       </p>
                       <div className="mt-6">
-                        <Link
-                          href="/checkout"
-                          className={`flex items-center justify-center rounded-md border border-transparent bg-pink-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-pink-700 ${
-                            productsInCart.length < 0 &&
-                            "bg-pink-400 pointer-events-none"
-                          }`}
+                        <button
+                          className={`flex items-center justify-center rounded-md border border-transparent bg-pink-500 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-pink-600 w-full`}
+                          onClick={handleCheckout}
                         >
                           Checkout
-                        </Link>
+                        </button>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>

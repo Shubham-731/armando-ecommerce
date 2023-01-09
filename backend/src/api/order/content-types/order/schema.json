@@ -12,32 +12,14 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "email": {
-      "type": "email",
-      "required": true
-    },
     "orderId": {
       "type": "uid",
       "required": true,
       "minLength": 5
     },
-    "paymentInfo": {
-      "type": "json"
-    },
     "products": {
       "type": "json",
       "required": true
-    },
-    "address": {
-      "type": "text",
-      "required": true
-    },
-    "name": {
-      "type": "string",
-      "required": true
-    },
-    "transactionId": {
-      "type": "string"
     },
     "amount": {
       "type": "integer",

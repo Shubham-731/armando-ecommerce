@@ -18,12 +18,6 @@
       "maxLength": 80,
       "minLength": 5
     },
-    "slug": {
-      "type": "uid",
-      "required": true,
-      "minLength": 5,
-      "maxLength": 80
-    },
     "description": {
       "type": "text",
       "required": true
