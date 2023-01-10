@@ -34,7 +34,7 @@ const Login = () => {
 
       if (data) {
         toast.success("Successfully logged in!", toastOptions);
-        localStorage.setItem("jwt", data.jwt);
+        localStorage.setItem("jwt", JSON.stringify(data));
 
         if (callbackUrl) {
           router.replace(callbackUrl);

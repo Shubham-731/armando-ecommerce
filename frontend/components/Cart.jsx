@@ -28,6 +28,7 @@ export default function Cart({
     try {
       // Check for JWT
       const JWT = localStorage.getItem("jwt");
+
       if (!JWT) {
         router.push("/auth/login");
       }
@@ -38,11 +39,12 @@ export default function Cart({
           products: productsInCart,
           orderId: `order_${shortid.generate()}`,
           amount: cartPrice,
+          email: JSON.parse(JWT).user.email,
         },
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${JWT}`,
+            Authorization: `Bearer ${JSON.parse(JWT).jwt}`,
           },
         }
       );

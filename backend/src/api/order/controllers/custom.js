@@ -37,12 +37,13 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
         cancel_url: `${process.env.NEXT_DEV_URL}/cancel`,
       });
 
-      const entry = await strapi.entityService.create("api::order.order", {
+      await strapi.entityService.create("api::order.order", {
         data: {
           orderId: ctx.request.body.orderId,
           products: ctx.request.body.products,
           amount: ctx.request.body.amount,
           status: "placed",
+          email: ctx.request.body.email,
           publishedAt: Date.now(),
         },
       });

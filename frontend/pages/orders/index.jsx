@@ -19,13 +19,15 @@ const Orders = () => {
 
     // Get orders
     const getOrders = async () => {
-      const serverUrl = `${process.env.NEXT_PUBLIC_STRAPI_API_HOST}/api/orders`;
+      const serverUrl = `${
+        process.env.NEXT_PUBLIC_STRAPI_API_HOST
+      }/api/orders?filters[email]=${JSON.parse(JWT).user.email}`;
 
       try {
         const { data } = await axios.get(serverUrl, {
           headers: {
             "content-type": "application/json",
-            Authorization: `Bearer ${JWT}`,
+            Authorization: `Bearer ${JSON.parse(JWT).jwt}`,
           },
         });
 
@@ -55,7 +57,7 @@ const Orders = () => {
       </div>
 
       <div className="flex items-center gap-4 flex-col divide-y divide-slate-300 space-y-4">
-        {orders.length > 0 &&
+        {orders.length > 0 ? (
           orders.map((order) => (
             <Order
               data={order.attributes.products}
@@ -63,7 +65,17 @@ const Orders = () => {
               status={order.attributes.status}
               amount={order.attributes.amount}
             />
-          ))}
+          ))
+        ) : (
+          <div className="my-10 w-full">
+            <p className="text-xl font-semibold">No orders yet</p>
+            <Link href="/">
+              <button className="px-8 py-4 rounded-lg bg-pink-500 hover:bg-pink-600 active:bg-pink-700 text-white my-4 font-semibold">
+                Continue Shopping
+              </button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -26,7 +26,7 @@ const Signup = () => {
         toast.error(res.data.error.message, toastOptions);
       } else {
         toast.success("Successfully registered!", toastOptions);
-        localStorage.setItem("jwt", res.data.jwt);
+        localStorage.setItem("jwt", JSON.stringify(res.data));
 
         if (callbackUrl) {
           router.replace(callbackUrl);
